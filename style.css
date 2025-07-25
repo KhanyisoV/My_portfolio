@@ -7,6 +7,7 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 body {
@@ -14,6 +15,7 @@ body {
     line-height: 1.6;
     color: #333;
     background-color: #fff;
+    overflow-x: hidden;
 }
 
 /* Remove underlines from all links */
@@ -28,12 +30,24 @@ a {
     padding: 2rem 1rem;
     background-color: #000;
     color: #fff;
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 #header-section h1 {
-    font-size: 2.5rem;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
     margin-bottom: 1rem;
     font-weight: bold;
+}
+
+#header-section h4 {
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    margin-bottom: 2rem;
+    opacity: 0.9;
 }
 
 /* Navigation Styles */
@@ -46,7 +60,7 @@ a {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 2rem;
+    gap: 1rem;
 }
 
 #main-navigation li {
@@ -55,22 +69,33 @@ a {
 
 #main-navigation a {
     color: #fff;
-    font-size: 1.1rem;
-    padding: 0.5rem 1rem;
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    padding: 0.75rem 1rem;
     border: 2px solid transparent;
     transition: all 0.3s ease;
     border-radius: 5px;
+    display: block;
+    touch-action: manipulation;
 }
 
-#main-navigation a:hover {
+#main-navigation a:hover,
+#main-navigation a:focus {
     border-color: #fff;
     background-color: #fff;
     color: #000;
+    transform: translateY(-2px);
 }
 
 /* Download Buttons */
 .download-buttons {
     margin: 2rem 0;
+}
+
+.download-buttons button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0 10px 10px 10px;
 }
 
 .download-btn {
@@ -79,16 +104,19 @@ a {
     padding: 12px 25px;
     border: 2px solid #fff;
     border-radius: 5px;
-    margin: 0 10px;
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
     transition: all 0.3s ease;
     display: inline-block;
+    touch-action: manipulation;
+    cursor: pointer;
 }
 
-.download-btn:hover {
+.download-btn:hover,
+.download-btn:focus {
     background-color: #000;
     color: #fff;
     border-color: #fff;
+    transform: translateY(-2px);
 }
 
 /* Main Content Sections */
@@ -99,12 +127,13 @@ a {
 #contact-section {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 3rem 2rem;
+    padding: 3rem 1rem;
+    position: relative;
 }
 
 /* Section Headers */
 h2 {
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 4vw, 2rem);
     margin-bottom: 2rem;
     text-align: center;
     color: #000;
@@ -115,28 +144,28 @@ h2 {
 }
 
 h3 {
-    font-size: 1.5rem;
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
     margin-bottom: 1rem;
     color: #000;
 }
 
 /* About Section */
 #about-section p {
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 3vw, 1.2rem);
     text-align: center;
     max-width: 800px;
     margin: 0 auto;
     line-height: 1.8;
 }
 
-/* Portfolio Section - Grid Layout */
+/* Portfolio Section */
 #portfolio-section {
     text-align: center;
 }
 
-#portfolio-section > div {
+.portfolio-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: 1fr;
     gap: 2rem;
     margin-top: 2rem;
 }
@@ -153,62 +182,20 @@ h3 {
     transform: translateY(-5px);
 }
 
-/* Video Styling - Square Shape */
+/* Video Styling - Mobile Optimized */
 video {
     width: 100%;
-    height: 250px;
+    height: auto;
+    max-height: 250px;
     object-fit: cover;
     border-radius: 8px;
     border: 2px solid #000;
     background-color: #000;
 }
 
-/* Fullscreen video styling */
-video:fullscreen {
-    object-fit: contain;
-    width: 100vw;
-    height: 100vh;
-    border: none;
-    border-radius: 0;
-}
-
-video:-webkit-full-screen {
-    object-fit: contain;
-    width: 100vw;
-    height: 100vh;
-    border: none;
-    border-radius: 0;
-}
-
-video:-moz-full-screen {
-    object-fit: contain;
-    width: 100vw;
-    height: 100vh;
-    border: none;
-    border-radius: 0;
-}
-
-video:-ms-fullscreen {
-    object-fit: contain;
-    width: 100vw;
-    height: 100vh;
-    border: none;
-    border-radius: 0;
-}
-/* Hide volume controls and mute button */
-video::-webkit-media-controls-volume-slider,
-video::-webkit-media-controls-mute-button {
-    display: none !important;
-}
-
-/* Firefox volume control hiding */
-video::-moz-media-controls-volume-control {
-    display: none !important;
-}
-
 .portfolio-project p {
     margin-top: 1rem;
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
     color: #333;
 }
 
@@ -222,16 +209,16 @@ video::-moz-media-controls-volume-control {
     border-radius: 5px;
 }
 
-/* Certifications Section - Same as Portfolio Section */
+/* Certifications Section - Mobile Optimized */
 #certifications-section {
     margin-top: 2rem;
     text-align: center;
 }
 
-#certifications-section > div {
+.certifications-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
     margin-top: 2rem;
 }
 
@@ -244,31 +231,25 @@ video::-moz-media-controls-volume-control {
 }
 
 .certification-item:hover {
-    transform: translateY(-5px);
+    transform: translateY(-3px);
 }
 
-/* Certificate Images - Quarter Size */
+/* Certificate Images - Mobile Optimized */
 .certification-item img {
-    width: 20%;
-    height: 50px;
-    object-fit: cover;
+    width: 120px;
+    height: 80px;
+    object-fit: contain;
     border-radius: 8px;
-    border: 2px solid #000;
-    background-color: #000;
-    transition: transform 0.3s ease;
-    margin: 0 auto 1.5rem auto;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    margin: 0 auto 1rem auto;
     display: block;
 }
 
-.certification-item img:hover {
-    transform: scale(1.1);
-}
-
 .certification-item p {
-    margin-top: 1.5rem;
-    font-size: 1rem;
+    font-size: clamp(0.85rem, 2.2vw, 1rem);
     color: #333;
-    padding-top: 0.5rem;
+    line-height: 1.6;
 }
 
 /* Skills Section */
@@ -283,7 +264,7 @@ video::-moz-media-controls-volume-control {
 
 #technical-skills p,
 #professional-skills p {
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
     line-height: 1.8;
 }
 
@@ -306,6 +287,7 @@ video::-moz-media-controls-volume-control {
     margin-bottom: 0.5rem;
     font-weight: bold;
     color: #000;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
 }
 
 .form-group input,
@@ -314,15 +296,17 @@ video::-moz-media-controls-volume-control {
     padding: 12px;
     border: 2px solid #ccc;
     border-radius: 5px;
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
     transition: border-color 0.3s ease;
     background-color: #fff;
+    touch-action: manipulation;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
     border-color: #000;
+    transform: scale(1.01);
 }
 
 .form-group textarea {
@@ -337,138 +321,179 @@ video::-moz-media-controls-volume-control {
     border: 2px solid #000;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
     transition: all 0.3s ease;
     width: 100%;
+    touch-action: manipulation;
 }
 
-.submit-btn:hover {
+.submit-btn:hover,
+.submit-btn:focus {
     background-color: #fff;
     color: #000;
     border-color: #000;
+    transform: translateY(-2px);
+}
+
+/* Animation Classes */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.slide-in-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: all 0.6s ease;
+}
+
+.slide-in-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.slide-in-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: all 0.6s ease;
+}
+
+.slide-in-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.bounce-in {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.6s ease;
+}
+
+.bounce-in.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Loading States */
+.loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    100% { left: 100%; }
 }
 
 /* Responsive Design */
-@media screen and (max-width: 768px) {
-    #header-section h1 {
-        font-size: 2rem;
+@media screen and (min-width: 768px) {
+    .portfolio-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     }
-    
+
+    .certifications-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+
+    .certification-item img {
+        width: 150px;
+        height: 100px;
+    }
+
     #main-navigation ul {
-        flex-direction: column;
-        gap: 1rem;
+        gap: 2rem;
     }
-    
-    #main-navigation a {
-        display: block;
-        text-align: center;
+
+    .download-buttons button {
+        margin: 0 10px;
     }
-    
+
     .download-btn {
-        display: block;
-        margin: 10px auto;
-        text-align: center;
-        width: 200px;
-    }
-    
-    #about-section,
-    #portfolio-section,
-    #education-section,
-    #skills-section,
-    #contact-section {
-        padding: 2rem 1rem;
-    }
-    
-    h2 {
-        font-size: 1.7rem;
-    }
-    
-    /* Portfolio Grid - Mobile */
-    #portfolio-section > div {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-    
-    video {
-        height: 200px;
-    }
-    
-    /* Certifications Grid - Mobile */
-    #certifications-section > div {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-    
-    .certification-item img {
-        width: 21.25%;
-        height: 40px;
-        margin-bottom: 1.5rem;
-    }
-    
-    .certification-item p {
-        margin-top: 1.5rem;
-        padding-top: 0.5rem;
+        display: inline-block;
+        width: auto;
     }
 }
 
-@media screen and (max-width: 480px) {
-    #header-section {
-        padding: 1.5rem 0.5rem;
+@media screen and (min-width: 1024px) {
+    .portfolio-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
-    
-    #header-section h1 {
-        font-size: 1.8rem;
+
+    .certifications-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
-    
-    #about-section,
-    #portfolio-section,
-    #education-section,
-    #skills-section,
-    #contact-section {
-        padding: 1.5rem 0.5rem;
-    }
-    
-    h2 {
-        font-size: 1.5rem;
-    }
-    
-    video {
-        height: 180px;
-    }
-    
+
     .certification-item img {
-        width: 22.5%;
-        height: 35px;
-        margin-bottom: 1.5rem;
-    }
-    
-    .certification-item p {
-        margin-top: 1.5rem;
-        padding-top: 0.5rem;
-    }
-    
-    .contact-form {
-        padding: 1.5rem;
+        width: 180px;
+        height: 120px;
     }
 }
 
-/* Large Screen Optimization */
-@media screen and (min-width: 1400px) {
-    #about-section,
-    #portfolio-section,
-    #education-section,
-    #skills-section,
-    #contact-section {
-        max-width: 1400px;
+/* Touch Optimization */
+@media (hover: none) {
+    .portfolio-project:hover,
+    .certification-item:hover,
+    #main-navigation a:hover,
+    .download-btn:hover,
+    .submit-btn:hover {
+        transform: none;
     }
-    
-    /* Portfolio Grid - Large Screens */
-    #portfolio-section > div {
-        grid-template-columns: repeat(3, 1fr);
+
+    .portfolio-project:active,
+    .certification-item:active {
+        transform: scale(0.98);
     }
-    
-    /* Certifications Grid - Large Screens */
-    #certifications-section > div {
-        grid-template-columns: repeat(3, 1fr);
+
+    #main-navigation a:active,
+    .download-btn:active,
+    .submit-btn:active {
+        transform: scale(0.95);
     }
+}
+
+/* Accessibility Improvements */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+/* Focus States */
+*:focus {
+    outline: 2px solid #000;
+    outline-offset: 2px;
+}
+
+/* Hidden elements initially */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+}
+
+.animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
 }

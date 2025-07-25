@@ -526,4 +526,261 @@ function scrambleText(element, finalText, duration = 2000) {
         
         iterations += 1 / 3;
     }, 30);
+    // Performance-optimized mobile JavaScript
+    class MobilePortfolio {
+        constructor() {
+            this.isTouch = 'ontouchstart' in window;
+            this.isMobile = window.innerWidth <= 768;
+            this.animations = new Map();
+            this.observers = new Map();
+            
+            this.init();
+        }
+
+        init() {
+            this.setupIntersectionObserver();
+            this.setupSmoothScrolling();
+            this.setupFormHandling();
+            this.setupVideoOptimization();
+            this.setupPerformanceOptimizations();
+            this.setupAccessibility();
+        }
+
+        setupIntersectionObserver() {
+            const options = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // Unobserve after animation to save resources
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, options);
+
+            // Observe all animated elements
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+
+            this.observers.set('scroll', observer);
+        }
+
+        setupSmoothScrolling() {
+            const navLinks = document.querySelectorAll('#main-navigation a[href^="#"]');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    const targetId = link.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    
+                    if (targetSection) {
+                        const headerOffset = 80;
+                        const elementPosition = targetSection.offsetTop;
+                        const offsetPosition = elementPosition - headerOffset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+
+                        // Update URL without causing scroll
+                        history.pushState(null, null, targetId);
+                    }
+                });
+            });
+        }
+
+        setupFormHandling() {
+            const form = document.getElementById('contact-form');
+            const submitBtn = document.getElementById('submit-btn');
+            const originalText = submitBtn.textContent;
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                // Show loading state
+                submitBtn.textContent = 'Sending...';
+                submitBtn.disabled = true;
+                submitBtn.classList.add('loading');
+
+                try {
+                    const formData = new FormData(form);
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        submitBtn.textContent = 'Message Sent! ✓';
+                        submitBtn.style.backgroundColor = '#4CAF50';
+                        form.reset();
+                        
+                        // Reset button after 3 seconds
+                        setTimeout(() => {
+                            this.resetSubmitButton(submitBtn, originalText);
+                        }, 3000);
+                    } else {
+                        throw new Error('Form submission failed');
+                    }
+                } catch (error) {
+                    submitBtn.textContent = 'Error - Try Again';
+                    submitBtn.style.backgroundColor = '#f44336';
+                    
+                    // Reset button after 3 seconds
+                    setTimeout(() => {
+                        this.resetSubmitButton(submitBtn, originalText);
+                    }, 3000);
+                }
+
+                submitBtn.classList.remove('loading');
+            });
+        }
+
+        resetSubmitButton(button, originalText) {
+            button.textContent = originalText;
+            button.style.backgroundColor = '#000';
+            button.disabled = false;
+        }
+
+        setupVideoOptimization() {
+            const videos = document.querySelectorAll('video');
+            
+            videos.forEach(video => {
+                // Optimize for mobile
+                video.setAttribute('playsinline', '');
+                video.setAttribute('preload', 'metadata');
+                
+                // Pause video when not in view to save battery
+                const videoObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            if (video.paused) {
+                                video.play().catch(() => {
+                                    // Handle autoplay restrictions
+                                });
+                            }
+                        } else {
+                            video.pause();
+                        }
+                    });
+                }, { threshold: 0.5 });
+                
+                videoObserver.observe(video);
+            });
+        }
+
+        setupPerformanceOptimizations() {
+            // Debounce scroll events
+            let scrollTimeout;
+            window.addEventListener('scroll', () => {
+                if (scrollTimeout) {
+                    cancelAnimationFrame(scrollTimeout);
+                }
+                
+                scrollTimeout = requestAnimationFrame(() => {
+                    this.handleScroll();
+                });
+            });
+
+            // Lazy load images
+            const images = document.querySelectorAll('img[loading="lazy"]');
+            if ('loading' in HTMLImageElement.prototype) {
+                // Native lazy loading supported
+                images.forEach(img => {
+                    img.src = img.src;
+                });
+            } else {
+                // Fallback for browsers without native lazy loading
+                this.setupLazyLoading(images);
+            }
+
+            // Cleanup on page unload
+            window.addEventListener('beforeunload', () => {
+                this.cleanup();
+            });
+        }
+
+        setupLazyLoading(images) {
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src || img.src;
+                        img.classList.remove('loading');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+
+            images.forEach(img => {
+                img.classList.add('loading');
+                imageObserver.observe(img);
+            });
+
+            this.observers.set('images', imageObserver);
+        }
+
+        setupAccessibility() {
+            // Add keyboard navigation support
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Tab') {
+                    document.body.classList.add('keyboard-nav');
+                }
+            });
+
+            document.addEventListener('mousedown', () => {
+                document.body.classList.remove('keyboard-nav');
+            });
+
+            // Improve focus management for mobile
+            const focusableElements = document.querySelectorAll(
+                'a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])'
+            );
+
+            focusableElements.forEach(element => {
+                element.addEventListener('focus', () => {
+                    element.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                });
+            });
+        }
+
+        handleScroll() {
+            // Implement any scroll-based animations here
+            // Keep this minimal for performance
+        }
+
+        cleanup() {
+            // Clean up observers and event listeners
+            this.observers.forEach(observer => {
+                observer.disconnect();
+            });
+            this.observers.clear();
+            this.animations.clear();
+        }
+    }
+
+    // Initialize when DOM is ready
+    document.addEventListener('DOMContentLoaded', () => {
+        new MobilePortfolio();
+    });
+
+    // Handle orientation changes
+    window.addEventListener('orientationchange', () => {
+        setTimeout(() => {
+            window.scrollTo(0, window.scrollX);
+        }, 100);
+    });
 }
