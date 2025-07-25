@@ -704,10 +704,7 @@ function scrambleText(element, finalText, duration = 2000) {
                 this.setupLazyLoading(images);
             }
 
-            // Cleanup on page unload
-            window.addEventListener('beforeunload', () => {
-                this.cleanup();
-            });
+           
         }
 
         setupLazyLoading(images) {
@@ -762,14 +759,7 @@ function scrambleText(element, finalText, duration = 2000) {
             // Keep this minimal for performance
         }
 
-        cleanup() {
-            // Clean up observers and event listeners
-            this.observers.forEach(observer => {
-                observer.disconnect();
-            });
-            this.observers.clear();
-            this.animations.clear();
-        }
+    
     }
 
     // Initialize when DOM is ready
